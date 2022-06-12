@@ -25,6 +25,7 @@ public class TempContoller : MonoBehaviour
 
     public Camera cam;
     private MouseLook _mouseLook;
+    private WeaponSway _weaponSway;
     public AudioSource _audioSource { get; private set; }
     
     public StateMachine stateMachine { get; private set; }
@@ -33,6 +34,15 @@ public class TempContoller : MonoBehaviour
     public SingleFIreState singleFireState { get; private set; }
     public AutoFireState autoFireState { get; private set; }
     public RunningGunState runningGunState { get; private set; }
+    public IdleAimingGunState idleAimingGunState { get; private set; }
+
+    [SerializeField] private PlayerUI PlayerUI;
+    [SerializeField] private MouseLook MouseLook;
+    [SerializeField] private BasicPlayerController MovementController;
+
+    public PlayerUI playerUI => PlayerUI;
+    public MouseLook mouseLook => MouseLook;
+    public BasicPlayerController mouvementController => MovementController;
 
     private void Awake()
     {
@@ -45,24 +55,19 @@ public class TempContoller : MonoBehaviour
         runningGunState = new RunningGunState(stateMachine, "Running", this);
     }
 
-    void Start()
+    private void Start()
     {
         _animator = GetComponent<Animator>();
         _audioSource = GetComponent<AudioSource>();
         _mouseLook = cam.transform.GetComponent<MouseLook>();
+        _weaponSway = transform.parent.GetComponent<WeaponSway>();
         stateMachine.Initialize(idleGunState);
     }
 
-    void Update()
+    private void Update()
     {
         stateMachine.currentState.Update();
         state.text = stateMachine.currentState.ToString();
-
-        //aiming
-        if (Input.GetMouseButton(1))
-        {
-            transform.localPosition = aimingPos;
-        }
     }
 
     private void FixedUpdate()
@@ -122,7 +127,18 @@ public class TempContoller : MonoBehaviour
     {
         _mouseLook.ResetRecoil();
     }
-    
-    
-    
+
+    public void SetAimPos()
+    {
+        transform.localPosition = aimingPos;
+    }
+
+    public void SetSway(bool state)
+    {
+        _weaponSway.isPosSway = state;
+    }
+
+
+
+
 }

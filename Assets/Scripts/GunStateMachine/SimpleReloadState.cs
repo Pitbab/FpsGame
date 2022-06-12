@@ -11,7 +11,7 @@ public class SimpleReloadState : GunState
     {
         base.Enter();
         currentTime = 0f;
-        totalTime = 0.5f;
+        totalTime = 1.2f;
         controller.Reload();
     }
 

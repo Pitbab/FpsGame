@@ -2,43 +2,39 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IdleGunState : GunState
+public class IdleAimingGunState : AdsGunState
 {
-    public IdleGunState(StateMachine stateMachine, string animationBool, TempContoller controller) : base(stateMachine, animationBool, controller) {}
+    public IdleAimingGunState(StateMachine stateMachine, string animationBool, TempContoller controller) : base(stateMachine, animationBool, controller) {}
     public override void Enter()
     {
         base.Enter();
 
     }
 
-    public override void HandleInput()
-    {
-        base.HandleInput();
-    }
-
     public override void Update()
     {
         base.Update();
-
-        if (isAiming)
-        {
-            controller._animator.Play("IdleAim");
-        }
         
         if (Input.GetKeyDown(KeyCode.R))
         {
             stateMachine.ChangeState(controller.simpleReloadState);
         }
 
-        if (isShooting)
+        if (Input.GetMouseButtonDown(0))
         {
             stateMachine.ChangeState(controller.singleFireState);
         }
 
-        if (isRunning)
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             stateMachine.ChangeState(controller.runningGunState);
         }
+
+    }
+
+    public override void HandleInput()
+    {
+        base.HandleInput();
 
     }
 

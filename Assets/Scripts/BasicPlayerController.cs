@@ -12,6 +12,8 @@ public class BasicPlayerController : MonoBehaviour
     private float speed = 100f;
     private Vector3 moveVec;
 
+    private bool inMenu = false;
+
     private void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -19,6 +21,8 @@ public class BasicPlayerController : MonoBehaviour
 
     private void Update()
     {
+        if(inMenu) return;
+        
         horAxis = Input.GetAxis("Horizontal");
         verAxis = Input.GetAxis("Vertical");
         
@@ -30,6 +34,11 @@ public class BasicPlayerController : MonoBehaviour
         }
         
         controller.Move(speed * moveVec  * Time.deltaTime);
+    }
+
+    public void SwitchMenuState(bool state)
+    {
+        inMenu = state;
     }
     
     

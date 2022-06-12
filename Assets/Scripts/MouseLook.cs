@@ -23,18 +23,14 @@ public class MouseLook : MonoBehaviour
     private float mouseY;
     public Transform body;
 
-    private void Start()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-    }
+    private bool inMenu = false;
     
     private void Update()
     {
         if (time > 0)
         {
-            recoilRotX += verticalRecoil/ 1000 * Time.deltaTime / recoilTime;
-            recoilRotY += horizontalRecoil / 100 * Time.deltaTime / recoilTime;
+            recoilRotX = verticalRecoil/ 1000 * Time.deltaTime / recoilTime;
+            recoilRotY = horizontalRecoil / 100 * Time.deltaTime / recoilTime;
             time -= Time.deltaTime;
         }
         else
@@ -42,8 +38,12 @@ public class MouseLook : MonoBehaviour
             recoilRotX = 0;
             recoilRotY = 0;
         }
-        
-        UpdateRotation();
+
+        if (!inMenu)
+        {
+            UpdateRotation();
+        }
+
     }
     
     private void UpdateRotation()
@@ -59,7 +59,7 @@ public class MouseLook : MonoBehaviour
             
         transform.parent.localRotation = Quaternion.Euler(_rotationX, 0f, 0f);
         body.Rotate(Vector3.up * mouseX);
-        
+
     }
 
     private void OnDrawGizmos()
@@ -90,5 +90,15 @@ public class MouseLook : MonoBehaviour
     public void ResetRecoil()
     {
         index = 0;
+    }
+
+    public void SetSensitivity(float sens)
+    {
+        mouseSens = sens;
+    }
+
+    public void SetStateMode(bool state)
+    {
+        inMenu = state;
     }
 }
