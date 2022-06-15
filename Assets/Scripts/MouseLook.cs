@@ -15,6 +15,11 @@ public class MouseLook : MonoBehaviour
     private float recoilRotY;
     private float time = 0f;
 
+    private Quaternion initRot;
+    private float replaceTime = 0.5f;
+    private bool needReplace = false;
+
+
     public Vector2[] recoilPattern;
     private int index;
     
@@ -32,11 +37,18 @@ public class MouseLook : MonoBehaviour
             recoilRotX = verticalRecoil/ 1000 * Time.deltaTime / recoilTime;
             recoilRotY = horizontalRecoil / 100 * Time.deltaTime / recoilTime;
             time -= Time.deltaTime;
+            needReplace = true;
         }
         else
         {
-            recoilRotX = 0;
-            recoilRotY = 0;
+            //recoilRotX = 0;
+            //recoilRotY = 0;
+            if (needReplace)
+            {
+                Debug.Log("starting to counter");
+                StartCoroutine(RemoveKnockBack());
+
+            }
         }
 
         if (!inMenu)
@@ -62,6 +74,25 @@ public class MouseLook : MonoBehaviour
 
     }
 
+    private IEnumerator RemoveKnockBack()
+    {
+        needReplace = false;
+        float timer = recoilTime * 4;
+
+        while (timer > 0)
+        {
+            recoilRotX = -verticalRecoil/ 1000 * Time.deltaTime / recoilTime / 4;
+            recoilRotY = -horizontalRecoil / 100 * Time.deltaTime / recoilTime / 4;
+            timer -= Time.deltaTime;
+            yield return null;
+        }
+
+        recoilRotX = 0;
+        recoilRotY = 0;
+
+        Debug.Log("counter done");
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
@@ -71,6 +102,8 @@ public class MouseLook : MonoBehaviour
 
     public void GenerateRecoil()
     {
+        initRot = transform.parent.localRotation;
+
         time = recoilTime;
         horizontalRecoil = recoilPattern[index].x;
         verticalRecoil = recoilPattern[index].y;

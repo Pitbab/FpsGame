@@ -15,7 +15,7 @@ public class WeaponSway : MonoBehaviour
     private Quaternion rotationY;
     private Quaternion targetRotation;
     private Vector3 targetPosition;
-    [SerializeField] private CharacterController rigController;
+    [SerializeField] private BasicPlayerController rigController;
     public bool isPosSway = true;
 
     void Update()
@@ -34,7 +34,7 @@ public class WeaponSway : MonoBehaviour
         if (isPosSway)
         {
             currentRotSmoothing = rotSmoothingHip;
-            targetPosition = rigController.velocity.normalized * swayPosMultiplier;
+            targetPosition = rigController.controller.velocity.normalized/6 + rigController.moveVec.normalized * swayPosMultiplier;
         }
         else
         {

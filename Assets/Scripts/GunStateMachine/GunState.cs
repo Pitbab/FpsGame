@@ -94,5 +94,8 @@ public class GunState : State
         
         //Unsubscribe to action here
         OnAimStateChanged -= controller.playerUI.SwitchCrossHairMode;
+        OnMenuStateChanged -= controller.mouseLook.SetStateMode;
+        OnMenuStateChanged -= controller.playerUI.SwitchMenuState;
+        OnMenuStateChanged -= controller.mouvementController.SwitchMenuState;
     }
 }

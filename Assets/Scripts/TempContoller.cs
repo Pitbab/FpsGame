@@ -27,7 +27,9 @@ public class TempContoller : MonoBehaviour
     private MouseLook _mouseLook;
     private WeaponSway _weaponSway;
     public AudioSource _audioSource { get; private set; }
-    
+
+    #region StateMachine variables
+
     public StateMachine stateMachine { get; private set; }
     public IdleGunState idleGunState { get; private set; }
     public SimpleReloadState simpleReloadState {get; private set; }
@@ -36,6 +38,8 @@ public class TempContoller : MonoBehaviour
     public RunningGunState runningGunState { get; private set; }
     public IdleAimingGunState idleAimingGunState { get; private set; }
 
+    #endregion
+    
     [SerializeField] private PlayerUI PlayerUI;
     [SerializeField] private MouseLook MouseLook;
     [SerializeField] private BasicPlayerController MovementController;
@@ -43,6 +47,9 @@ public class TempContoller : MonoBehaviour
     public PlayerUI playerUI => PlayerUI;
     public MouseLook mouseLook => MouseLook;
     public BasicPlayerController mouvementController => MovementController;
+
+
+    #region Unity Events Functions
 
     private void Awake()
     {
@@ -75,15 +82,48 @@ public class TempContoller : MonoBehaviour
         stateMachine.currentState.FixedUpdated();
     }
 
-    public void SetFlash(bool state)
+    #endregion
+
+    #region Setter
+
+    public void SetFlash(bool flashState)
     {
-        muzzleFlash.SetActive(state);
+        muzzleFlash.SetActive(flashState);
     }
 
     public void SetFlashAngle()
     {
         muzzleFlash.transform.rotation = Quaternion.Euler(0, 0, Random.Range(0, 45));
     }
+    
+    public void SetAimPos()
+    {
+        transform.localPosition = aimingPos;
+    }
+
+    public void SetSway(bool swayState)
+    {
+        _weaponSway.isPosSway = swayState;
+    }
+    
+
+    #endregion
+
+    #region Linker
+
+    public void Recoil()
+    {
+        _mouseLook.GenerateRecoil();
+    }
+
+    public void ResetRecoil()
+    {
+        _mouseLook.ResetRecoil();
+    }
+
+    #endregion
+
+    #region Sound
 
     public void PlaySingleShot()
     {
@@ -98,6 +138,10 @@ public class TempContoller : MonoBehaviour
         _audioSource.Play();
     }
 
+    #endregion
+
+    #region Others
+    
     public void SpawnEffect(Vector3 pos, Vector3 rot)
     {
         Instantiate(bulletImpact, pos, Quaternion.LookRotation(rot));
@@ -118,27 +162,6 @@ public class TempContoller : MonoBehaviour
 
     }
 
-    public void Recoil()
-    {
-        _mouseLook.GenerateRecoil();
-    }
-
-    public void ResetRecoil()
-    {
-        _mouseLook.ResetRecoil();
-    }
-
-    public void SetAimPos()
-    {
-        transform.localPosition = aimingPos;
-    }
-
-    public void SetSway(bool state)
-    {
-        _weaponSway.isPosSway = state;
-    }
-
-
-
-
+    #endregion
+    
 }
