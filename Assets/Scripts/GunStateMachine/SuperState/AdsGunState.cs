@@ -10,6 +10,7 @@ public class AdsGunState : GunState
         base.Enter();
         
         controller.SetAimPos();
+        controller.SetFov(controller.aimFov);
         controller.SetSway(false);
     }
 

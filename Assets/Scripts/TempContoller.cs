@@ -23,6 +23,9 @@ public class TempContoller : MonoBehaviour
 
     public float rateOfFire = 0.05f;
 
+    public float normalFov { get; private set; }
+    public float aimFov {get; private set; }
+    
     public Camera cam;
     private MouseLook _mouseLook;
     private WeaponSway _weaponSway;
@@ -68,6 +71,9 @@ public class TempContoller : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
         _mouseLook = cam.transform.GetComponent<MouseLook>();
         _weaponSway = transform.parent.GetComponent<WeaponSway>();
+
+        normalFov = cam.fieldOfView;
+        aimFov = 40f;
         stateMachine.Initialize(idleGunState);
     }
 
@@ -105,6 +111,11 @@ public class TempContoller : MonoBehaviour
     {
         _weaponSway.isPosSway = swayState;
     }
+
+    public void SetFov(float fov)
+    {
+        cam.fieldOfView = fov;
+    }
     
 
     #endregion
@@ -129,11 +140,14 @@ public class TempContoller : MonoBehaviour
     {
         _audioSource.clip = single;
         _audioSource.Play();
+        
+        //only testing, no need for serviceLocator on component inside this gameObject hierarchy
+        //ServiceLocator.Current.Get<ISoundService>().PlaySound(single, transform.position, 1f);
     }
 
     public void PlayLoop()
     {
-        _audioSource.loop = true;
+        _audioSource.loop = true; 
         _audioSource.clip = auto;
         _audioSource.Play();
     }

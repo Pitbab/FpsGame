@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BasicPlayerController : MonoBehaviour
 {
@@ -19,7 +20,8 @@ public class BasicPlayerController : MonoBehaviour
     
     public float walkingSpeed = 6f;
     public float fallingSpeed = 5f;
-
+    private int score;
+    
     #region State Machine Varaibles
 
     [SerializeField] private TMP_Text playerStateDebug;
@@ -52,6 +54,7 @@ public class BasicPlayerController : MonoBehaviour
         stateMachine.currentState.Update();
         playerStateDebug.text = stateMachine.currentState.ToString();
         if(inMenu) return;
+        
     }
 
     private void FixedUpdate()
@@ -109,6 +112,11 @@ public class BasicPlayerController : MonoBehaviour
     {
         Gizmos.color = Color.blue;
         Gizmos.DrawSphere(checkGroundPlace.position, 0.3f);
+    }
+
+    public void ReceiveScore(int amount)
+    {
+        score += amount;
     }
     
 

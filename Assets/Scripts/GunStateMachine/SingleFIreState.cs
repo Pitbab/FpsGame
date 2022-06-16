@@ -57,6 +57,9 @@ public class SingleFIreState : GunState
 
     private void RayCastBullet()
     {
+        ServiceLocator.Current.Get<IBulletService>().Hit(controller, trajectory);
+        
+        /*
         trajectory.direction = controller.cam.transform.forward;
         trajectory.origin = controller.cam.transform.position;
 
@@ -79,8 +82,12 @@ public class SingleFIreState : GunState
             }
 
             controller.SpawnEffect(firstHit.point, firstHit.normal);
+            firstHit.collider.GetComponent<Target>().Hit();
+        
             
         }
+        
+        */
         
     }
 }

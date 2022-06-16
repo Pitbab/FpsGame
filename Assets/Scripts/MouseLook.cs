@@ -14,9 +14,7 @@ public class MouseLook : MonoBehaviour
     private float recoilRotX;
     private float recoilRotY;
     private float time = 0f;
-
-    private Quaternion initRot;
-    private float replaceTime = 0.5f;
+    
     private bool needReplace = false;
 
 
@@ -29,7 +27,14 @@ public class MouseLook : MonoBehaviour
     public Transform body;
 
     private bool inMenu = false;
-    
+
+    private Camera cam;
+
+    private void Start()
+    {
+        cam = GetComponent<Camera>();
+    }
+
     private void Update()
     {
         if (time > 0)
@@ -45,7 +50,6 @@ public class MouseLook : MonoBehaviour
             //recoilRotY = 0;
             if (needReplace)
             {
-                Debug.Log("starting to counter");
                 StartCoroutine(RemoveKnockBack());
 
             }
@@ -89,8 +93,6 @@ public class MouseLook : MonoBehaviour
 
         recoilRotX = 0;
         recoilRotY = 0;
-
-        Debug.Log("counter done");
     }
 
     private void OnDrawGizmos()
@@ -102,8 +104,6 @@ public class MouseLook : MonoBehaviour
 
     public void GenerateRecoil()
     {
-        initRot = transform.parent.localRotation;
-
         time = recoilTime;
         horizontalRecoil = recoilPattern[index].x;
         verticalRecoil = recoilPattern[index].y;
@@ -133,5 +133,10 @@ public class MouseLook : MonoBehaviour
     public void SetStateMode(bool state)
     {
         inMenu = state;
+    }
+
+    public void SetCameraFov(float fov)
+    {
+        cam.fieldOfView = fov;
     }
 }

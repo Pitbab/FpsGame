@@ -32,6 +32,7 @@ public class GunState : State
         
         //Subscribe to action here
         OnAimStateChanged += controller.playerUI.SwitchCrossHairMode;
+        OnAimStateChanged += controller.SetSway;
         OnMenuStateChanged += controller.mouseLook.SetStateMode;
         OnMenuStateChanged += controller.playerUI.SwitchMenuState;
         OnMenuStateChanged += controller.mouvementController.SwitchMenuState;
@@ -64,13 +65,13 @@ public class GunState : State
         if (isAiming)
         {
             controller.SetAimPos();
-            controller.SetSway(false);
+            controller.SetFov(controller.aimFov);
             OnAimStateChanged?.Invoke(false);
         }
         else
         {
             controller.transform.localPosition = Vector3.zero;
-            controller.SetSway(true);
+            controller.SetFov(controller.normalFov);
             OnAimStateChanged?.Invoke(true);
         }
 
@@ -94,6 +95,7 @@ public class GunState : State
         
         //Unsubscribe to action here
         OnAimStateChanged -= controller.playerUI.SwitchCrossHairMode;
+        OnAimStateChanged -= controller.SetSway;
         OnMenuStateChanged -= controller.mouseLook.SetStateMode;
         OnMenuStateChanged -= controller.playerUI.SwitchMenuState;
         OnMenuStateChanged -= controller.mouvementController.SwitchMenuState;

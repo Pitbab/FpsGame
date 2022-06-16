@@ -9,6 +9,7 @@ public class HipFireGunState : GunState
     {
         base.Enter();
         controller.transform.localPosition = Vector3.zero;
+        controller.SetFov(controller.normalFov);
         controller.SetSway(true);
     }
 
