@@ -14,6 +14,7 @@ public class PlayerData : ScriptableObject
 
     [Header("ground detection")] 
     [SerializeField, Range(0, 5)] private float groundCheckRange;
+    [SerializeField, Range(0, 2)] private float vaultDetectionRange;
     [SerializeField] private LayerMask whatIsGround;
 
     [Header("gravity")] 
@@ -27,6 +28,7 @@ public class PlayerData : ScriptableObject
     public int SlideSpeed => slideSpeed;
 
     public float GroundCheckRange => groundCheckRange;
+    public float VaultDetectionRange => vaultDetectionRange;
     public LayerMask WhatIsGround => whatIsGround;
 
     public int GravityForce => gravityForce;

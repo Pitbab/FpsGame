@@ -15,8 +15,17 @@ public class WeaponSway : MonoBehaviour
     private Quaternion rotationY;
     private Quaternion targetRotation;
     private Vector3 targetPosition;
+    private Vector3 startingPos;
     [SerializeField] private BasicPlayerController rigController;
+    [SerializeField] private MouseLook mouseLook;
     public bool isPosSway = true;
+
+    private void Start()
+    {
+        startingPos = new Vector3(0, 0, (-(mouseLook.baseFov / 60f) + 1f) * 0.3f);
+        Debug.Log(startingPos);
+        transform.localPosition = startingPos;
+    }
 
     void Update()
     {
@@ -34,12 +43,12 @@ public class WeaponSway : MonoBehaviour
         if (isPosSway)
         {
             currentRotSmoothing = rotSmoothingHip;
-            targetPosition = rigController.controller.velocity.normalized/6 + rigController.moveVec.normalized * swayPosMultiplier;
+            targetPosition = startingPos + rigController.controller.velocity.normalized/6 + rigController.moveVec.normalized * swayPosMultiplier;
         }
         else
         {
             currentRotSmoothing = rotSmoothingAim;
-            targetPosition = Vector3.zero;
+            targetPosition = startingPos;
         }
         
         transform.localRotation = Quaternion.Slerp(transform.localRotation, targetRotation, currentRotSmoothing * Time.deltaTime);

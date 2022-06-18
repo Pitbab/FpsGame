@@ -7,6 +7,7 @@ public class MouseLook : MonoBehaviour
 {
     
     [SerializeField] private float mouseSens = 180f;
+    public float baseFov { get; private set; }
     
     private float verticalRecoil;
     private float horizontalRecoil;
@@ -30,9 +31,10 @@ public class MouseLook : MonoBehaviour
 
     private Camera cam;
 
-    private void Start()
+    private void Awake()
     {
         cam = GetComponent<Camera>();
+        baseFov = cam.fieldOfView;
     }
 
     private void Update()

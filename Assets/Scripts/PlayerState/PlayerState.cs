@@ -9,6 +9,7 @@ public class PlayerState : State
     protected StateMachine stateMachine;
     protected PlayerData playerData;
     public float baseSpeed;
+    protected bool jump;
 
     protected PlayerState(BasicPlayerController playerController, StateMachine stateMachine, PlayerData playerData)
     {
@@ -24,6 +25,7 @@ public class PlayerState : State
     public override void Update()
     {
         base.Update();
+        jump = Input.GetKeyDown(KeyCode.Space);
     }
 
     public override void FixedUpdated()

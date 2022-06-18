@@ -5,7 +5,6 @@ using UnityEngine;
 //super state that contains all state that are on ground
 public class PlayerGroundedState : PlayerState
 {
-    protected bool jump;
     protected bool crouch;
     protected bool moving;
     protected bool running;
@@ -33,7 +32,6 @@ public class PlayerGroundedState : PlayerState
         }
         
         crouch = Input.GetKeyDown(KeyCode.LeftControl);
-        jump = Input.GetKeyDown(KeyCode.Space);
         running = Input.GetKey(KeyCode.LeftShift);
         moving = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) ||
                  Input.GetKey(KeyCode.S);

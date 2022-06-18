@@ -17,9 +17,10 @@ MonoBehaviour:
   crouchSpeed: 3
   slideSpeed: 10
   groundCheckRange: 0.3
+  vaultDetectionRange: 0.4
   whatIsGround:
     serializedVersion: 2
     m_Bits: 256
   gravityForce: -30
   terminalVelocity: -50
-  jumpSpeed: 5
+  jumpSpeed: 3

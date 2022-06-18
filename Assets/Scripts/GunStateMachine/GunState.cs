@@ -14,6 +14,7 @@ public class GunState : State
     protected bool isShooting;
     protected bool isRunning;
     protected bool inMenu = false;
+    private float aimFov;
 
     public Action<bool> OnAimStateChanged;
     public Action<bool> OnMenuStateChanged;
@@ -30,6 +31,8 @@ public class GunState : State
     {
         base.Enter();
         controller._animator.SetBool(animationBool, true);
+        
+        aimFov = gunData.AimingFov * (controller.mouseLook.baseFov / 60f) + 1f * 0.3f;
         
         
         //Subscribe to action here
@@ -70,8 +73,11 @@ public class GunState : State
         if (isAiming)
         {
             isRunning = false;
-            controller.transform.localPosition = gunData.AimingPos;
-            controller.SetFov(gunData.AimingFov);
+            Vector3 workspace;
+            workspace = gunData.AimingPos;
+            workspace.z *= (((controller.mouseLook.baseFov / 60f) + 1f) * 0.2f);
+            controller.transform.localPosition = workspace;
+            controller.SetFov(aimFov);
             OnAimStateChanged?.Invoke(false);
         }
         else

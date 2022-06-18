@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class BasicPlayerController : MonoBehaviour
 {
-    [SerializeField] private Transform checkGroundPlace;
+    [SerializeField] private Transform checkGroundPlace, vaultingPlace;
     public PlayerData playerData;
     
     public CharacterController controller;
@@ -24,6 +24,7 @@ public class BasicPlayerController : MonoBehaviour
     public PlayerFallingState playerFallingState { get; private set; }
     public PlayerJumpingState playerJumpingState { get; private set; }
     public PlayerRunningState playerRunningState { get; private set; }
+    public PlayerVaultingState playerVaultingState { get; private set; }
 
     #endregion
 
@@ -35,6 +36,7 @@ public class BasicPlayerController : MonoBehaviour
         playerFallingState = new PlayerFallingState(this, stateMachine, playerData);
         playerJumpingState = new PlayerJumpingState(this, stateMachine, playerData);
         playerRunningState = new PlayerRunningState(this, stateMachine, playerData);
+        playerVaultingState = new PlayerVaultingState(this, stateMachine, playerData);
     }
 
     private void Start()
@@ -45,11 +47,9 @@ public class BasicPlayerController : MonoBehaviour
 
     private void Update()
     {
-        
         if(inMenu) return;
         stateMachine.currentState.Update();
         playerStateDebug.text = stateMachine.currentState.ToString();
-
         
     }
 
@@ -80,6 +80,12 @@ public class BasicPlayerController : MonoBehaviour
         velocity = moveVec * playerData.JumpSpeed/2;
         velocity.y = Mathf.Sqrt(playerData.JumpSpeed * -1f * playerData.GravityForce);
     }
+
+    public void Vault()
+    {
+        velocity = Vector3.zero;
+        velocity.y = Mathf.Sqrt(playerData.JumpSpeed * -1f * playerData.GravityForce);
+    }
     
     public void GroundedVelocity()
     {
@@ -104,10 +110,16 @@ public class BasicPlayerController : MonoBehaviour
         return Physics.CheckSphere(checkGroundPlace.position, playerData.GroundCheckRange, playerData.WhatIsGround);
     }
 
+    public bool CheckVault()
+    {
+        return Physics.Raycast(vaultingPlace.position, transform.forward, playerData.VaultDetectionRange, playerData.WhatIsGround);
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;
         Gizmos.DrawSphere(checkGroundPlace.position, playerData.GroundCheckRange);
+        Gizmos.DrawRay(vaultingPlace.position, transform.forward * playerData.VaultDetectionRange); 
     }
 
 

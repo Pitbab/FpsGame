@@ -10,7 +10,8 @@ public class InAirState : PlayerState
     }
     
     protected float horAxis;
-    protected float verAxis;  
+    protected float verAxis;
+    protected bool canVault;
 
     public override void Enter()
     {
@@ -23,9 +24,15 @@ public class InAirState : PlayerState
         base.Update();
         horAxis = Input.GetAxis("Horizontal");
         verAxis = Input.GetAxis("Vertical");
-        
+        canVault = playerController.CheckVault();
+
         playerController.Move(horAxis, verAxis, baseSpeed);
         playerController.FallingVelocity();
+
+        if (canVault && jump)
+        {
+            stateMachine.ChangeState(playerController.playerVaultingState);
+        }
     }
 
     public override void FixedUpdated()
@@ -42,4 +49,5 @@ public class InAirState : PlayerState
     {
         base.HandleInput();
     }
+    
 }
