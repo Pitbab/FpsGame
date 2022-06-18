@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class IdleGunState : GunState
 {
-    public IdleGunState(StateMachine stateMachine, string animationBool, TempContoller controller) : base(stateMachine, animationBool, controller) {}
+    public IdleGunState(StateMachine stateMachine, string animationBool, TempContoller controller, GunData gunData) : base(stateMachine, animationBool, controller, gunData) {}
     public override void Enter()
     {
         base.Enter();
@@ -35,7 +35,7 @@ public class IdleGunState : GunState
             stateMachine.ChangeState(controller.singleFireState);
         }
 
-        if (isRunning)
+        if (isRunning && !isAiming)
         {
             stateMachine.ChangeState(controller.runningGunState);
         }

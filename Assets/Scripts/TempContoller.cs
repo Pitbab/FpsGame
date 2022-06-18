@@ -8,12 +8,10 @@ using Random = UnityEngine.Random;
 public class TempContoller : MonoBehaviour
 {
 
-    [SerializeField] private GameObject muzzleFlash, cartridgeExit, cartridge, hitPoint;
-    [SerializeField] private AudioClip single, auto, magOut, magIn;
-    public ParticleSystem bulletImpact;
+    [SerializeField] private GameObject muzzleFlash, cartridgeExit;
     [SerializeField] private TMP_Text state;
     public LayerMask ignore;
-    [SerializeField] private Vector3 aimingPos;
+    [SerializeField] private GunData gunData;
 
 
     public Animator _animator { get; private set; }
@@ -24,8 +22,7 @@ public class TempContoller : MonoBehaviour
     public float rateOfFire = 0.05f;
 
     public float normalFov { get; private set; }
-    public float aimFov {get; private set; }
-    
+
     public Camera cam;
     private MouseLook _mouseLook;
     private WeaponSway _weaponSway;
@@ -58,11 +55,11 @@ public class TempContoller : MonoBehaviour
     {
         stateMachine = new StateMachine();
 
-        idleGunState = new IdleGunState(stateMachine, "Idle", this);
-        simpleReloadState = new SimpleReloadState(stateMachine, "SimpleReload", this);
-        singleFireState = new SingleFIreState(stateMachine, "Shoot", this);
-        autoFireState = new AutoFireState(stateMachine, "AutoShoot", this);
-        runningGunState = new RunningGunState(stateMachine, "Running", this);
+        idleGunState = new IdleGunState(stateMachine, "Idle", this, gunData);
+        simpleReloadState = new SimpleReloadState(stateMachine, "SimpleReload", this, gunData);
+        singleFireState = new SingleFIreState(stateMachine, "Shoot", this, gunData);
+        autoFireState = new AutoFireState(stateMachine, "AutoShoot", this, gunData);
+        runningGunState = new RunningGunState(stateMachine, "Running", this, gunData);
     }
 
     private void Start()
@@ -73,7 +70,6 @@ public class TempContoller : MonoBehaviour
         _weaponSway = transform.parent.GetComponent<WeaponSway>();
 
         normalFov = cam.fieldOfView;
-        aimFov = 40f;
         stateMachine.Initialize(idleGunState);
     }
 
@@ -104,7 +100,7 @@ public class TempContoller : MonoBehaviour
     
     public void SetAimPos()
     {
-        transform.localPosition = aimingPos;
+        transform.localPosition = gunData.AimingPos;
     }
 
     public void SetSway(bool swayState)
@@ -138,7 +134,7 @@ public class TempContoller : MonoBehaviour
 
     public void PlaySingleShot()
     {
-        _audioSource.clip = single;
+        _audioSource.clip = gunData.Single;
         _audioSource.Play();
         
         //only testing, no need for serviceLocator on component inside this gameObject hierarchy
@@ -148,7 +144,7 @@ public class TempContoller : MonoBehaviour
     public void PlayLoop()
     {
         _audioSource.loop = true; 
-        _audioSource.clip = auto;
+        _audioSource.clip = gunData.Auto ;
         _audioSource.Play();
     }
 
@@ -158,9 +154,8 @@ public class TempContoller : MonoBehaviour
     
     public void SpawnEffect(Vector3 pos, Vector3 rot)
     {
-        Instantiate(bulletImpact, pos, Quaternion.LookRotation(rot));
-        Instantiate(cartridge, cartridgeExit.transform.position, Quaternion.identity).GetComponent<Rigidbody>().AddForce(transform.right * 5f + transform.forward * Random.Range(-10, 10), ForceMode.Impulse);
-        Destroy(Instantiate(hitPoint, pos, Quaternion.identity), 3f);
+        gunData.CreateBulletHole(pos, rot);
+        Instantiate(gunData.Cartridge, cartridgeExit.transform.position, Quaternion.identity).GetComponent<Rigidbody>().AddForce(transform.right * 5f + transform.forward * Random.Range(-10, 10), ForceMode.Impulse);
     }
 
     public void Reload()
@@ -170,9 +165,9 @@ public class TempContoller : MonoBehaviour
 
     private IEnumerator ReloadSound()
     {
-        _audioSource.PlayOneShot(magOut);
-        yield return new WaitForSeconds(magOut.length + 0.1f);
-        _audioSource.PlayOneShot(magIn);
+        _audioSource.PlayOneShot(gunData.MagOut);
+        yield return new WaitForSeconds(gunData.MagOut.length + 0.1f);
+        _audioSource.PlayOneShot(gunData.MagIn);
 
     }
 

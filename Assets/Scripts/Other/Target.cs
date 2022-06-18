@@ -11,7 +11,6 @@ public class Target : Hitable
     {
         base.Hit();
         Destroy(transform.parent.gameObject);
-        Debug.Log("shot landed");
     }
 
 }

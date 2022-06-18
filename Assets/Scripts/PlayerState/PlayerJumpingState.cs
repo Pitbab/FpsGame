@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerJumpingState : InAirState
 {
-    public PlayerJumpingState(BasicPlayerController playerController, StateMachine stateMachine) : base(playerController, stateMachine)
+    public PlayerJumpingState(BasicPlayerController playerController, StateMachine stateMachine, PlayerData playerData) : base(playerController, stateMachine, playerData)
     {
     }
 
@@ -12,7 +12,6 @@ public class PlayerJumpingState : InAirState
     {
         base.Enter();
         playerController.Jump();
-        speed = playerController.walkingSpeed;
     }
 
     public override void Update()

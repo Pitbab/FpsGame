@@ -6,12 +6,12 @@ public class SimpleReloadState : GunState
 {
     private float totalTime;
     private float currentTime;
-    public SimpleReloadState(StateMachine stateMachine, string animationBool, TempContoller controller) : base(stateMachine, animationBool, controller) {}
+    public SimpleReloadState(StateMachine stateMachine, string animationBool, TempContoller controller, GunData gunData) : base(stateMachine, animationBool, controller, gunData) {}
     public override void Enter()
     {
         base.Enter();
         currentTime = 0f;
-        totalTime = 1.2f;
+        totalTime = 1f;
         controller.Reload();
     }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerStandingState : PlayerGroundedState
 {
-    public PlayerStandingState(BasicPlayerController playerController, StateMachine stateMachine) : base(playerController, stateMachine)
+    public PlayerStandingState(BasicPlayerController playerController, StateMachine stateMachine, PlayerData playerData) : base(playerController, stateMachine, playerData)
     {
     }
 
@@ -13,7 +13,7 @@ public class PlayerStandingState : PlayerGroundedState
         base.Enter();
         jump = false;
         crouch = false;
-        speed = playerController.walkingSpeed;
+        baseSpeed = playerData.WalkSpeed;
     }
 
     public override void Update()
@@ -22,6 +22,11 @@ public class PlayerStandingState : PlayerGroundedState
         if (jump)
         {
             stateMachine.ChangeState(playerController.playerJumpingState);
+        }
+
+        if (running)
+        {
+            stateMachine.ChangeState(playerController.playerRunningState);
         }
     }
 

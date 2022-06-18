@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RunningGunState : GunState
 {
-    public RunningGunState(StateMachine stateMachine, string animationBool, TempContoller controller) : base(stateMachine, animationBool, controller) {}
+    public RunningGunState(StateMachine stateMachine, string animationBool, TempContoller controller, GunData gunData) : base(stateMachine, animationBool, controller, gunData) {}
     private bool isHolding;
     public override void Enter()
     {
@@ -14,8 +14,14 @@ public class RunningGunState : GunState
     public override void Update()
     {
         base.Update();
-        HandleInput();
         
+        isHolding = Input.GetKey(KeyCode.LeftShift);
+        
+        if (isAiming)
+        {
+            stateMachine.ChangeState(controller.idleGunState);
+        }
+
         if (isHolding) return;
         stateMachine.ChangeState(controller.idleGunState);
     }
@@ -23,7 +29,6 @@ public class RunningGunState : GunState
     public override void HandleInput()
     {
         base.HandleInput();
-        isHolding = Input.GetKey(KeyCode.LeftShift);
     }
 
     public override void Exit()

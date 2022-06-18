@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class PlayerFallingState : InAirState
 {
-    public PlayerFallingState(BasicPlayerController playerController, StateMachine stateMachine) : base(playerController, stateMachine)
+    public PlayerFallingState(BasicPlayerController playerController, StateMachine stateMachine, PlayerData playerData) : base(playerController, stateMachine, playerData)
     {
     }
 
     public override void Enter()
     {
         base.Enter();
-        speed = playerController.walkingSpeed;
     }
 
     public override void Update()

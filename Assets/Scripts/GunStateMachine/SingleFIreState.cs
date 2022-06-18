@@ -9,7 +9,7 @@ public class SingleFIreState : GunState
     private float switchTime;
     private float timeToAuto = 0.05f;
     private Ray trajectory;
-    public SingleFIreState(StateMachine stateMachine, string animationBool, TempContoller controller) : base(stateMachine, animationBool, controller) {}
+    public SingleFIreState(StateMachine stateMachine, string animationBool, TempContoller controller, GunData gunData) : base(stateMachine, animationBool, controller, gunData) {}
     public override void Enter()
     {
         base.Enter();
@@ -58,36 +58,5 @@ public class SingleFIreState : GunState
     private void RayCastBullet()
     {
         ServiceLocator.Current.Get<IBulletService>().Hit(controller, trajectory);
-        
-        /*
-        trajectory.direction = controller.cam.transform.forward;
-        trajectory.origin = controller.cam.transform.position;
-
-        RaycastHit[] hits = Physics.RaycastAll(trajectory, 1000f, ~controller.ignore);
-
-        if (hits.Length > 0)
-        {
-            RaycastHit firstHit = hits[hits.Length - 1];
-            float smallestDist = 1000f;
-
-            foreach (var hit in hits)
-            {
-                float dist = Vector3.Distance(hit.point, controller.transform.position);
-            
-                if (dist < smallestDist)
-                {
-                    smallestDist = dist;
-                    firstHit = hit;
-                }
-            }
-
-            controller.SpawnEffect(firstHit.point, firstHit.normal);
-            firstHit.collider.GetComponent<Target>().Hit();
-        
-            
-        }
-        
-        */
-        
     }
 }

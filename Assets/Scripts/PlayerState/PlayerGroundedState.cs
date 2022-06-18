@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//super state that contains all state that are on ground
 public class PlayerGroundedState : PlayerState
 {
-    protected float speed;
     protected bool jump;
     protected bool crouch;
     protected bool moving;
@@ -14,7 +14,7 @@ public class PlayerGroundedState : PlayerState
     protected float verAxis;
     
     
-    protected PlayerGroundedState(BasicPlayerController playerController, StateMachine stateMachine) : base(playerController, stateMachine)
+    protected PlayerGroundedState(BasicPlayerController playerController, StateMachine stateMachine, PlayerData playerData) : base(playerController, stateMachine, playerData)
     {
     }
 
@@ -41,7 +41,7 @@ public class PlayerGroundedState : PlayerState
         horAxis = Input.GetAxis("Horizontal");
         verAxis = Input.GetAxis("Vertical");
         
-        playerController.Move(horAxis, verAxis, speed);
+        playerController.Move(horAxis, verAxis, baseSpeed);
         playerController.GroundedVelocity();
     }
 

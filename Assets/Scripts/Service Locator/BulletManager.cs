@@ -1,12 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class BulletManager : IBulletService
 {
+
+    private GameObject targetHit;
+    private Hitable hitable;
+    private GameObject bulletHoleSfx, bulletImpactSfx;
     public void InitService()
     {
-        Debug.Log("test");
+        Debug.Log("Bullet manager is now available ");
     }
 
     public void Hit(TempContoller shooter, Ray ray)
@@ -32,14 +37,13 @@ public class BulletManager : IBulletService
                 }
             }
 
+            targetHit = firstHit.collider.gameObject;
+            hitable = targetHit.GetComponent<Hitable>();
             shooter.SpawnEffect(firstHit.point, firstHit.normal);
             
-            Debug.Log(firstHit.collider.gameObject.name);
-
-            Hitable t = firstHit.collider.GetComponent<Hitable>();
-            if (t != null)
+            if (hitable != null)
             {
-                t.Hit();
+                hitable.Hit();
             }
 
         }

@@ -4,18 +4,29 @@ using UnityEngine;
 
 public class PlayerRunningState : PlayerGroundedState
 {
-    protected PlayerRunningState(BasicPlayerController playerController, StateMachine stateMachine) : base(playerController, stateMachine)
+    public PlayerRunningState(BasicPlayerController playerController, StateMachine stateMachine, PlayerData playerData) : base(playerController, stateMachine, playerData)
     {
     }
 
     public override void Enter()
     {
         base.Enter();
+        baseSpeed = playerData.RunSpeed;
     }
 
     public override void Update()
     {
         base.Update();
+
+        if (!running)
+        {
+            stateMachine.ChangeState(playerController.playerStandingState);
+        }
+
+        if (jump)
+        {
+            stateMachine.ChangeState(playerController.playerJumpingState);
+        }
     }
 
     public override void FixedUpdated()

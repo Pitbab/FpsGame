@@ -7,11 +7,14 @@ public class PlayerState : State
 
     protected BasicPlayerController playerController;
     protected StateMachine stateMachine;
+    protected PlayerData playerData;
+    public float baseSpeed;
 
-    protected PlayerState(BasicPlayerController playerController, StateMachine stateMachine)
+    protected PlayerState(BasicPlayerController playerController, StateMachine stateMachine, PlayerData playerData)
     {
         this.playerController = playerController;
         this.stateMachine = stateMachine;
+        this.playerData = playerData;
     }
     public override void Enter()
     {
@@ -31,6 +34,7 @@ public class PlayerState : State
     public override void Exit()
     {
         base.Exit();
+        playerController.lastState = this;
     }
 
     public override void HandleInput()

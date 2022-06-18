@@ -2,19 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// super state that contains all states that are airborn
 public class InAirState : PlayerState
 {
-    protected InAirState(BasicPlayerController playerController, StateMachine stateMachine) : base(playerController, stateMachine)
+    protected InAirState(BasicPlayerController playerController, StateMachine stateMachine, PlayerData playerData) : base(playerController, stateMachine, playerData)
     {
     }
     
-    protected float speed;
     protected float horAxis;
     protected float verAxis;  
 
     public override void Enter()
     {
         base.Enter();
+        baseSpeed = playerController.lastState.baseSpeed;
     }
 
     public override void Update()
@@ -23,7 +24,7 @@ public class InAirState : PlayerState
         horAxis = Input.GetAxis("Horizontal");
         verAxis = Input.GetAxis("Vertical");
         
-        playerController.Move(horAxis, verAxis, speed);
+        playerController.Move(horAxis, verAxis, baseSpeed);
         playerController.FallingVelocity();
     }
 

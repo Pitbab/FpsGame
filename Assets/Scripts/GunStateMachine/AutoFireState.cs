@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AutoFireState : GunState
 {
-    public AutoFireState(StateMachine stateMachine, string animationBool, TempContoller controller) : base(stateMachine, animationBool, controller) {}
+    public AutoFireState(StateMachine stateMachine, string animationBool, TempContoller controller, GunData gunData) : base(stateMachine, animationBool, controller, gunData) {}
 
     private bool isHolding;
     private float lastShot;
@@ -55,30 +55,6 @@ public class AutoFireState : GunState
     
     private void RayCastBullet()
     {
-        trajectory.direction = controller.cam.transform.forward;
-        trajectory.origin = controller.cam.transform.position;
-
-        RaycastHit[] hits = Physics.RaycastAll(trajectory, 1000f, ~controller.ignore);
-
-        if (hits.Length > 0)
-        {
-            RaycastHit firstHit = hits[hits.Length - 1];
-            float smallestDist = 1000f;
-
-            foreach (var hit in hits)
-            {
-                float dist = Vector3.Distance(hit.point, controller.transform.position);
-            
-                if (dist < smallestDist)
-                {
-                    smallestDist = dist;
-                    firstHit = hit;
-                }
-            }
-
-            controller.SpawnEffect(firstHit.point, firstHit.normal);
-            
-        }
-        
+        ServiceLocator.Current.Get<IBulletService>().Hit(controller, trajectory);
     }
 }

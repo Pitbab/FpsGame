@@ -8,6 +8,7 @@ public class GunState : State
     protected StateMachine stateMachine;
     private string animationBool;
     protected TempContoller controller;
+    protected GunData gunData;
     protected bool isAiming;
     private bool oldInput;
     protected bool isShooting;
@@ -17,11 +18,12 @@ public class GunState : State
     public Action<bool> OnAimStateChanged;
     public Action<bool> OnMenuStateChanged;
     
-    protected GunState(StateMachine stateMachine, string animationBool, TempContoller controller)
+    protected GunState(StateMachine stateMachine, string animationBool, TempContoller controller, GunData gunData)
     {
         this.animationBool = animationBool;
         this.stateMachine = stateMachine;
         this.controller = controller;
+        this.gunData = gunData;
     }
 
     public override void Enter()
@@ -51,12 +53,15 @@ public class GunState : State
         }
         
         if(inMenu) return;
-        
-        isRunning = Input.GetKey(KeyCode.LeftShift);
         isShooting = Input.GetMouseButton(0);
         
         oldInput = isAiming;
         isAiming = Input.GetMouseButton(1);
+        
+        if (!isAiming)
+        {
+            isRunning = Input.GetKey(KeyCode.LeftShift);
+        }
         
         //optimising update with return condition to avoid setting aim state every frame
         if (oldInput == isAiming) return;
@@ -64,8 +69,9 @@ public class GunState : State
         
         if (isAiming)
         {
-            controller.SetAimPos();
-            controller.SetFov(controller.aimFov);
+            isRunning = false;
+            controller.transform.localPosition = gunData.AimingPos;
+            controller.SetFov(gunData.AimingFov);
             OnAimStateChanged?.Invoke(false);
         }
         else

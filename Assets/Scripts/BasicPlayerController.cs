@@ -7,29 +7,23 @@ using UnityEngine.SceneManagement;
 
 public class BasicPlayerController : MonoBehaviour
 {
-    public LayerMask whatIsGround;
     [SerializeField] private Transform checkGroundPlace;
+    public PlayerData playerData;
     
     public CharacterController controller;
-    private float gravityForce = -30f;
-    private float terminalVelocity = -50f;
     public Vector3 moveVec { get; private set;}
     private Vector3 velocity;
-
     private bool inMenu = false;
-    
-    public float walkingSpeed = 6f;
-    public float fallingSpeed = 5f;
-    private int score;
-    
+
     #region State Machine Varaibles
 
     [SerializeField] private TMP_Text playerStateDebug;
-    private float jumpSpeed = 5f;
+    public PlayerState lastState;
     public StateMachine stateMachine { get; private set; }
     public PlayerStandingState playerStandingState { get; private set; }
     public PlayerFallingState playerFallingState { get; private set; }
     public PlayerJumpingState playerJumpingState { get; private set; }
+    public PlayerRunningState playerRunningState { get; private set; }
 
     #endregion
 
@@ -37,9 +31,10 @@ public class BasicPlayerController : MonoBehaviour
     private void Awake()
     {
         stateMachine = new StateMachine();
-        playerStandingState = new PlayerStandingState(this, stateMachine);
-        playerFallingState = new PlayerFallingState(this, stateMachine);
-        playerJumpingState = new PlayerJumpingState(this, stateMachine);
+        playerStandingState = new PlayerStandingState(this, stateMachine, playerData);
+        playerFallingState = new PlayerFallingState(this, stateMachine, playerData);
+        playerJumpingState = new PlayerJumpingState(this, stateMachine, playerData);
+        playerRunningState = new PlayerRunningState(this, stateMachine, playerData);
     }
 
     private void Start()
@@ -51,9 +46,10 @@ public class BasicPlayerController : MonoBehaviour
     private void Update()
     {
         
+        if(inMenu) return;
         stateMachine.currentState.Update();
         playerStateDebug.text = stateMachine.currentState.ToString();
-        if(inMenu) return;
+
         
     }
 
@@ -76,48 +72,43 @@ public class BasicPlayerController : MonoBehaviour
             moveVec /= moveVec.magnitude;
         }
         
-        controller.Move(moveVec * speed * Time.deltaTime);
+        controller.Move(moveVec * (speed * Time.deltaTime));
     }
     
     public void Jump()
     {
-        Vector3 dir = transform.right * Input.GetAxis("Horizontal") + transform.forward * Input.GetAxis("Vertical");
-        velocity = dir * controller.velocity.magnitude / 2; 
-        velocity.y = Mathf.Sqrt(jumpSpeed * -1f * gravityForce);
+        velocity = moveVec * playerData.JumpSpeed/2;
+        velocity.y = Mathf.Sqrt(playerData.JumpSpeed * -1f * playerData.GravityForce);
     }
     
     public void GroundedVelocity()
     {
+        velocity = Vector3.zero;
         velocity.y = -10f * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
     }
 
     public void FallingVelocity()
     {
-        velocity.y += gravityForce * Time.deltaTime;
+        velocity.y += playerData.GravityForce * Time.deltaTime;
 
-        if (velocity.y < terminalVelocity)
+        if (velocity.y < playerData.TerminalVelocity)
         {
-            velocity.y = terminalVelocity;
+            velocity.y = playerData.TerminalVelocity;
         }
         controller.Move(velocity * Time.deltaTime);
     }
 
     public bool CheckGround()
     {
-        return Physics.CheckSphere(checkGroundPlace.position, 0.3f, whatIsGround);
+        return Physics.CheckSphere(checkGroundPlace.position, playerData.GroundCheckRange, playerData.WhatIsGround);
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;
-        Gizmos.DrawSphere(checkGroundPlace.position, 0.3f);
+        Gizmos.DrawSphere(checkGroundPlace.position, playerData.GroundCheckRange);
     }
 
-    public void ReceiveScore(int amount)
-    {
-        score += amount;
-    }
-    
 
 }

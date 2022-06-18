@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class HipFireGunState : GunState
 {
-    public HipFireGunState(StateMachine stateMachine, string animationBool, TempContoller controller) : base(stateMachine, animationBool, controller) {}
+    public HipFireGunState(StateMachine stateMachine, string animationBool, TempContoller controller, GunData gunData) : base(stateMachine, animationBool, controller, gunData) {}
     public override void Enter()
     {
         base.Enter();
-        controller.transform.localPosition = Vector3.zero;
-        controller.SetFov(controller.normalFov);
-        controller.SetSway(true);
+        //controller.transform.localPosition = Vector3.zero;
+        //controller.SetFov(controller.normalFov);
+        //controller.SetSway(true);
     }
 
     public override void Update()
