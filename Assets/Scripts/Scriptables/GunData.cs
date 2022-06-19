@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 public class GunData : ScriptableObject
 {
     [Header("Gun Sfx")] 
-    [SerializeField] private ParticleSystem bulletImpact;
+    [SerializeField] private GameObject bulletImpact;
     [SerializeField] private GameObject cartridge;
 
     [Header("Gun Ref")]
@@ -34,9 +34,9 @@ public class GunData : ScriptableObject
     public float RateOfFire => rateOfFire;
     public float AimingFov => aimingFov;
     
-    public void CreateBulletHole(Vector3 pos, Vector3 rot)
+    public void CreateBulletHole(Vector3 pos, Vector3 rot, GameObject target)
     {
-        Instantiate(bulletImpact, pos, Quaternion.LookRotation(rot));
+        Instantiate(bulletImpact, pos, Quaternion.LookRotation(rot), target.transform);
     }
     
 

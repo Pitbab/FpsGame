@@ -43,7 +43,7 @@ public class WeaponSway : MonoBehaviour
         if (isPosSway)
         {
             currentRotSmoothing = rotSmoothingHip;
-            targetPosition = startingPos + rigController.controller.velocity.normalized/6 + rigController.moveVec.normalized * swayPosMultiplier;
+            targetPosition = startingPos + rigController.controller.velocity.normalized * swayPosMultiplier;
         }
         else
         {

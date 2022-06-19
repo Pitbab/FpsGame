@@ -48,6 +48,8 @@ public class TempContoller : MonoBehaviour
     public MouseLook mouseLook => MouseLook;
     public BasicPlayerController mouvementController => MovementController;
 
+    [SerializeField] private GameObject hitMarker;
+
 
     #region Unity Events Functions
 
@@ -152,9 +154,9 @@ public class TempContoller : MonoBehaviour
 
     #region Others
     
-    public void SpawnEffect(Vector3 pos, Vector3 rot)
+    public void SpawnEffect(Vector3 pos, Vector3 rot, GameObject target)
     {
-        gunData.CreateBulletHole(pos, rot);
+        gunData.CreateBulletHole(pos, rot, target);
         Instantiate(gunData.Cartridge, cartridgeExit.transform.position, Quaternion.identity).GetComponent<Rigidbody>().AddForce(transform.right * 5f + transform.forward * Random.Range(-10, 10), ForceMode.Impulse);
     }
 
@@ -169,6 +171,13 @@ public class TempContoller : MonoBehaviour
         yield return new WaitForSeconds(gunData.MagOut.length + 0.1f);
         _audioSource.PlayOneShot(gunData.MagIn);
 
+    }
+
+    public IEnumerator HitMarker()
+    {
+        hitMarker.SetActive(true);
+        yield return new WaitForSeconds(0.1f);
+        hitMarker.SetActive(false);
     }
 
     #endregion

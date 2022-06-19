@@ -18,10 +18,10 @@ public class PlayerJumpingState : InAirState
     {
         base.Update();
 
-        if (playerController.controller.velocity.y < 0)
-        {
-            stateMachine.ChangeState(playerController.playerFallingState);
-        }
+        //if (playerController.controller.velocity.y < 0.01f)
+        //{
+            //stateMachine.ChangeState(playerController.playerFallingState);
+        //}
     }
 
     public override void FixedUpdated()

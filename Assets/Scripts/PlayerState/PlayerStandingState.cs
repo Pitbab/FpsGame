@@ -19,12 +19,15 @@ public class PlayerStandingState : PlayerGroundedState
     public override void Update()
     {
         base.Update();
+        
+        playerController.Move(horAxis, verAxis, baseSpeed);
+        
         if (jump)
         {
             stateMachine.ChangeState(playerController.playerJumpingState);
         }
 
-        if (running)
+        if (running  && verAxis > 0f)
         {
             stateMachine.ChangeState(playerController.playerRunningState);
         }

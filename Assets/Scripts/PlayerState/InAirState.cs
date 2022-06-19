@@ -12,6 +12,8 @@ public class InAirState : PlayerState
     protected float horAxis;
     protected float verAxis;
     protected bool canVault;
+    protected bool coyoteTime;
+    private float timer;
 
     public override void Enter()
     {
@@ -22,6 +24,9 @@ public class InAirState : PlayerState
     public override void Update()
     {
         base.Update();
+        
+        UpdateCoyoteTime();
+        
         horAxis = Input.GetAxis("Horizontal");
         verAxis = Input.GetAxis("Vertical");
         canVault = playerController.CheckVault();
@@ -33,7 +38,33 @@ public class InAirState : PlayerState
         {
             stateMachine.ChangeState(playerController.playerVaultingState);
         }
+        
+        if (playerController.controller.velocity.y < 0.01f)
+        {
+            stateMachine.ChangeState(playerController.playerFallingState);
+        }
+
+        if (jump && coyoteTime)
+        {   
+            stateMachine.ChangeState(playerController.playerJumpingState);
+        }
     }
+    
+    private void UpdateCoyoteTime()
+    {
+        if (coyoteTime)
+        {
+            timer += Time.deltaTime;
+        }
+        
+        if (coyoteTime && timer > playerData.CoyoteTime)
+        {
+            coyoteTime = false;
+        }
+    }
+    
+    public void StartCoyoteTime() => coyoteTime = true;
+    public void RestartTimer() => timer = 0f;
 
     public override void FixedUpdated()
     {

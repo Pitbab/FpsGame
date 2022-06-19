@@ -21,6 +21,7 @@ public class PlayerData : ScriptableObject
     [SerializeField, Range(-100, 100)] private int gravityForce;
     [SerializeField, Range(-100, 0)] private int terminalVelocity;
     [SerializeField, Range(0, 20)] private int jumpSpeed;
+    [SerializeField, Range(0, 5)] private float coyoteTime;
     
     public int WalkSpeed => walkSpeed;
     public int RunSpeed => runSpeed;
@@ -34,6 +35,8 @@ public class PlayerData : ScriptableObject
     public int GravityForce => gravityForce;
     public int TerminalVelocity => terminalVelocity;
     public int JumpSpeed => jumpSpeed;
+
+    public float CoyoteTime => coyoteTime;
 
 
 }

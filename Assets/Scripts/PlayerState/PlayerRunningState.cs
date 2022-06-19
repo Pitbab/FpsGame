@@ -12,12 +12,18 @@ public class PlayerRunningState : PlayerGroundedState
     {
         base.Enter();
         baseSpeed = playerData.RunSpeed;
+        
     }
 
     public override void Update()
     {
         base.Update();
 
+        //limit the player to turn when running
+        horAxis /= 2;
+        
+        playerController.Move(horAxis, verAxis, baseSpeed);
+        
         if (!running)
         {
             stateMachine.ChangeState(playerController.playerStandingState);

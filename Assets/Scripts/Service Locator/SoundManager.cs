@@ -9,10 +9,6 @@ public class SoundManager : ISoundService
     private GameObject obj;
     private const string name = "AudioService";
     
-    public void Testing()
-    {
-        Debug.Log("Hello there!");
-    }
     public void PlaySound(AudioClip clip, Vector3 position, float volume)
     {
         obj.transform.position = position;

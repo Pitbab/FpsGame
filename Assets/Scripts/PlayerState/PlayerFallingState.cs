@@ -7,6 +7,8 @@ public class PlayerFallingState : InAirState
     public PlayerFallingState(BasicPlayerController playerController, StateMachine stateMachine, PlayerData playerData) : base(playerController, stateMachine, playerData)
     {
     }
+    
+    //private bool coyoteTime;
 
     public override void Enter()
     {
@@ -16,11 +18,18 @@ public class PlayerFallingState : InAirState
     public override void Update()
     {
         base.Update();
+
+        //if (jump && coyoteTime)
+        //{
+            //stateMachine.ChangeState(playerController.playerJumpingState);
+        //}
+        
         if (playerController.CheckGround())
         {
             stateMachine.ChangeState(playerController.playerStandingState);
         }
     }
+    
 
     public override void FixedUpdated()
     {
@@ -36,4 +45,5 @@ public class PlayerFallingState : InAirState
     {
         base.HandleInput();
     }
+    
 }

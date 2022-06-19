@@ -15,7 +15,7 @@ public class RunningGunState : GunState
     {
         base.Update();
         
-        isHolding = Input.GetKey(KeyCode.LeftShift);
+        isHolding = isRunning;
         
         if (isAiming)
         {

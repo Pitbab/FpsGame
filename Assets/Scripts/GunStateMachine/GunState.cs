@@ -63,7 +63,7 @@ public class GunState : State
         
         if (!isAiming)
         {
-            isRunning = Input.GetKey(KeyCode.LeftShift);
+            isRunning = Input.GetKey(KeyCode.LeftShift) && Input.GetAxis("Vertical") > 0;
         }
         
         //optimising update with return condition to avoid setting aim state every frame

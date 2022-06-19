@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class BasicPlayerController : MonoBehaviour
 {
-    [SerializeField] private Transform checkGroundPlace, vaultingPlace;
+    [SerializeField] private Transform checkGroundPlace, topVaultingPlace, bottomVaultingPlace;
     public PlayerData playerData;
     
     public CharacterController controller;
@@ -71,13 +71,16 @@ public class BasicPlayerController : MonoBehaviour
         {
             moveVec /= moveVec.magnitude;
         }
+
+        moveVec *= speed;
         
-        controller.Move(moveVec * (speed * Time.deltaTime));
+        controller.Move((moveVec + velocity) * Time.deltaTime);
     }
+    
     
     public void Jump()
     {
-        velocity = moveVec * playerData.JumpSpeed/2;
+        //velocity = moveVec * playerData.JumpSpeed/6;
         velocity.y = Mathf.Sqrt(playerData.JumpSpeed * -1f * playerData.GravityForce);
     }
 
@@ -91,7 +94,7 @@ public class BasicPlayerController : MonoBehaviour
     {
         velocity = Vector3.zero;
         velocity.y = -10f * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime);
+        //controller.Move(velocity * Time.deltaTime);
     }
 
     public void FallingVelocity()
@@ -102,7 +105,7 @@ public class BasicPlayerController : MonoBehaviour
         {
             velocity.y = playerData.TerminalVelocity;
         }
-        controller.Move(velocity * Time.deltaTime);
+        //controller.Move(velocity * Time.deltaTime);
     }
 
     public bool CheckGround()
@@ -112,14 +115,15 @@ public class BasicPlayerController : MonoBehaviour
 
     public bool CheckVault()
     {
-        return Physics.Raycast(vaultingPlace.position, transform.forward, playerData.VaultDetectionRange, playerData.WhatIsGround);
+        return Physics.Raycast(bottomVaultingPlace.position, transform.forward, playerData.VaultDetectionRange, playerData.WhatIsGround) && !Physics.Raycast(topVaultingPlace.position, transform.forward, playerData.VaultDetectionRange);
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;
         Gizmos.DrawSphere(checkGroundPlace.position, playerData.GroundCheckRange);
-        Gizmos.DrawRay(vaultingPlace.position, transform.forward * playerData.VaultDetectionRange); 
+        Gizmos.DrawRay(topVaultingPlace.position, transform.forward * playerData.VaultDetectionRange);
+        Gizmos.DrawRay(bottomVaultingPlace.position, transform.forward * playerData.VaultDetectionRange); 
     }
 
 

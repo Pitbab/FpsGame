@@ -20,6 +20,7 @@ public class PlayerGroundedState : PlayerState
     public override void Enter()
     {
         base.Enter();
+        playerController.playerFallingState.RestartTimer();
     }
 
     public override void Update()
@@ -29,6 +30,7 @@ public class PlayerGroundedState : PlayerState
         if (!playerController.CheckGround())
         {
             stateMachine.ChangeState(playerController.playerFallingState);
+            playerController.playerFallingState.StartCoyoteTime();
         }
         
         crouch = Input.GetKeyDown(KeyCode.LeftControl);
@@ -39,7 +41,6 @@ public class PlayerGroundedState : PlayerState
         horAxis = Input.GetAxis("Horizontal");
         verAxis = Input.GetAxis("Vertical");
         
-        playerController.Move(horAxis, verAxis, baseSpeed);
         playerController.GroundedVelocity();
     }
 

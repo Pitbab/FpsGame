@@ -24,3 +24,4 @@ MonoBehaviour:
   gravityForce: -30
   terminalVelocity: -50
   jumpSpeed: 3
+  coyoteTime: 0.2

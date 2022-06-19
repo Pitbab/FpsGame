@@ -39,11 +39,12 @@ public class BulletManager : IBulletService
 
             targetHit = firstHit.collider.gameObject;
             hitable = targetHit.GetComponent<Hitable>();
-            shooter.SpawnEffect(firstHit.point, firstHit.normal);
+            shooter.SpawnEffect(firstHit.point, firstHit.normal, targetHit);
             
             if (hitable != null)
             {
                 hitable.Hit();
+                shooter.StartCoroutine(shooter.HitMarker());
             }
 
         }

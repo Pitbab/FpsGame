@@ -10,6 +10,7 @@ public class PlayerState : State
     protected PlayerData playerData;
     public float baseSpeed;
     protected bool jump;
+    protected float startTime;
 
     protected PlayerState(BasicPlayerController playerController, StateMachine stateMachine, PlayerData playerData)
     {
@@ -20,6 +21,7 @@ public class PlayerState : State
     public override void Enter()
     {
         base.Enter();
+        startTime = Time.time;
     }
 
     public override void Update()
