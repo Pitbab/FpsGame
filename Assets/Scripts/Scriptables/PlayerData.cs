@@ -23,6 +23,9 @@ public class PlayerData : ScriptableObject
     [SerializeField, Range(0, 20)] private int jumpSpeed;
     [SerializeField, Range(0, 5)] private float coyoteTime;
     
+    [Header("Sounds")]
+    public List<AudioClip> walkOnConcrete = new List<AudioClip>();
+
     public int WalkSpeed => walkSpeed;
     public int RunSpeed => runSpeed;
     public int CrouchSpeed => crouchSpeed;

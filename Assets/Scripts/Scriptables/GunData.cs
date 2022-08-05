@@ -22,6 +22,8 @@ public class GunData : ScriptableObject
     [Header("Gun Stats")] 
     [SerializeField] private float rateOfFire;
     [SerializeField] private float aimingFov;
+    [SerializeField] private float timeToAim;
+    [SerializeField] private float timeToDeAim;
 
     //damage, penetration, etc
 
@@ -33,6 +35,8 @@ public class GunData : ScriptableObject
     public AudioClip MagIn => magIn;
     public float RateOfFire => rateOfFire;
     public float AimingFov => aimingFov;
+    public float TimeToAim => timeToAim;
+    public float TimeToDeAim => timeToAim;
     
     public void CreateBulletHole(Vector3 pos, Vector3 rot, GameObject target)
     {

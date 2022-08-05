@@ -7,7 +7,6 @@ public class PlayerGroundedState : PlayerState
 {
     protected bool crouch;
     protected bool moving;
-    protected bool running;
     protected bool shooting;
     protected float horAxis;
     protected float verAxis;
@@ -34,7 +33,6 @@ public class PlayerGroundedState : PlayerState
         }
         
         crouch = Input.GetKeyDown(KeyCode.LeftControl);
-        running = Input.GetKey(KeyCode.LeftShift);
         moving = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) ||
                  Input.GetKey(KeyCode.S);
         shooting = Input.GetKeyDown(KeyCode.Mouse0);

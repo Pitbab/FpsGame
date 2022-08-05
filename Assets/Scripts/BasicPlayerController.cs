@@ -11,9 +11,11 @@ public class BasicPlayerController : MonoBehaviour
     public PlayerData playerData;
     
     public CharacterController controller;
+    public AudioSource audioSource;
     public Vector3 moveVec { get; private set;}
     private Vector3 velocity;
     private bool inMenu = false;
+    public float currentSpeed;
 
     #region State Machine Varaibles
 
@@ -42,6 +44,7 @@ public class BasicPlayerController : MonoBehaviour
     private void Start()
     {
         controller = GetComponent<CharacterController>();
+        audioSource = GetComponent<AudioSource>();
         stateMachine.Initialize(playerStandingState);
     }
 

@@ -8,7 +8,8 @@ public class SoundManager : ISoundService
     private AudioSource audioSource;
     private GameObject obj;
     private const string name = "AudioService";
-    
+    private SoundManager instance;
+
     public void PlaySound(AudioClip clip, Vector3 position, float volume)
     {
         obj.transform.position = position;
@@ -21,5 +22,6 @@ public class SoundManager : ISoundService
         obj = new GameObject();
         obj.name = name;
         audioSource = obj.AddComponent<AudioSource>();
+        Object.DontDestroyOnLoad(obj);
     }
 }

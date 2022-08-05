@@ -16,6 +16,8 @@ public class GunState : State
     protected bool inMenu = false;
     private float aimFov;
 
+    private Coroutine currentRoutine;
+
     public Action<bool> OnAimStateChanged;
     public Action<bool> OnMenuStateChanged;
     
@@ -31,8 +33,8 @@ public class GunState : State
     {
         base.Enter();
         controller._animator.SetBool(animationBool, true);
-        
-        aimFov = gunData.AimingFov * (controller.mouseLook.baseFov / 60f) + 1f * 0.3f;
+
+        aimFov = gunData.AimingFov;
         
         
         //Subscribe to action here
@@ -46,9 +48,7 @@ public class GunState : State
     public override void Update()
     {
         base.Update();
-
         
-        //need to gain access to the basic movement controller and the camera controller
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             inMenu = !inMenu;
@@ -73,17 +73,28 @@ public class GunState : State
         if (isAiming)
         {
             isRunning = false;
-            Vector3 workspace;
-            workspace = gunData.AimingPos;
-            workspace.z *= (((controller.mouseLook.baseFov / 60f) + 1f) * 0.2f);
-            controller.transform.localPosition = workspace;
-            controller.SetFov(aimFov);
+            //Vector3 workspace;
+            //workspace = gunData.AimingPos;
+            //workspace.z *= (((controller.mouseLook.baseFov / 60f) + 1f) * 0.2f);
+           // controller.transform.localPosition = workspace;
+            //controller.SetFov(aimFov);
+            if (currentRoutine != null)
+            {
+                controller.StopCoroutine(currentRoutine);
+            }
+            currentRoutine = controller.StartCoroutine(controller.AimLerp());
             OnAimStateChanged?.Invoke(false);
         }
         else
         {
-            controller.transform.localPosition = Vector3.zero;
-            controller.SetFov(controller.normalFov);
+            if (currentRoutine != null)
+            {
+                controller.StopCoroutine(currentRoutine);
+            }
+
+            currentRoutine = controller.StartCoroutine(controller.DeAimLerp());
+            //controller.transform.localPosition = Vector3.zero;
+            //controller.SetFov(controller.mouseLook.baseFov);
             OnAimStateChanged?.Invoke(true);
         }
 

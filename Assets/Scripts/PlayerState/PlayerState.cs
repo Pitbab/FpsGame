@@ -8,8 +8,10 @@ public class PlayerState : State
     protected BasicPlayerController playerController;
     protected StateMachine stateMachine;
     protected PlayerData playerData;
-    public float baseSpeed;
+    //public float baseSpeed;
     protected bool jump;
+    protected bool jumpBuffer;
+    protected bool running;
     protected float startTime;
 
     protected PlayerState(BasicPlayerController playerController, StateMachine stateMachine, PlayerData playerData)
@@ -28,6 +30,8 @@ public class PlayerState : State
     {
         base.Update();
         jump = Input.GetKeyDown(KeyCode.Space);
+        jumpBuffer = Input.GetKey(KeyCode.Space);
+        running = Input.GetKey(KeyCode.LeftShift);
     }
 
     public override void FixedUpdated()

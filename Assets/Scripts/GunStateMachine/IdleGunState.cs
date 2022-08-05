@@ -40,6 +40,11 @@ public class IdleGunState : GunState
             stateMachine.ChangeState(controller.runningGunState);
         }
 
+        if (controller.mouvementController.stateMachine.currentState == controller.mouvementController.playerVaultingState)
+        {
+            stateMachine.ChangeState(controller.vaultingGunState);
+        }
+
     }
 
     public override void Exit()

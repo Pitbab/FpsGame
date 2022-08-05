@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerStandingState : PlayerGroundedState
 {
+
+    private float StepTimer = 0.4f;
+    private float currentTime = 0f;
     public PlayerStandingState(BasicPlayerController playerController, StateMachine stateMachine, PlayerData playerData) : base(playerController, stateMachine, playerData)
     {
     }
@@ -13,14 +16,24 @@ public class PlayerStandingState : PlayerGroundedState
         base.Enter();
         jump = false;
         crouch = false;
-        baseSpeed = playerData.WalkSpeed;
+        playerController.currentSpeed = playerData.WalkSpeed;
     }
 
     public override void Update()
     {
         base.Update();
         
-        playerController.Move(horAxis, verAxis, baseSpeed);
+        playerController.Move(horAxis, verAxis, playerController.currentSpeed);
+
+        if (horAxis != 0 || verAxis != 0)
+        {
+            currentTime += Time.deltaTime;
+            if (currentTime > StepTimer)
+            {
+                playerController.audioSource.PlayOneShot(playerData.walkOnConcrete[Random.Range(0, playerData.walkOnConcrete.Capacity)]);
+                currentTime = 0;
+            }
+        }
         
         if (jump)
         {

@@ -19,12 +19,13 @@ public class PlayerFallingState : InAirState
     {
         base.Update();
 
-        //if (jump && coyoteTime)
-        //{
-            //stateMachine.ChangeState(playerController.playerJumpingState);
-        //}
+        if (!playerController.CheckGround()) return;
         
-        if (playerController.CheckGround())
+        if (running)
+        {
+            stateMachine.ChangeState(playerController.playerRunningState);
+        }
+        else
         {
             stateMachine.ChangeState(playerController.playerStandingState);
         }

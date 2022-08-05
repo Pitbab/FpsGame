@@ -37,6 +37,8 @@ public class TempContoller : MonoBehaviour
     public AutoFireState autoFireState { get; private set; }
     public RunningGunState runningGunState { get; private set; }
     public IdleAimingGunState idleAimingGunState { get; private set; }
+    
+    public VaultingGunState vaultingGunState { get; private set; }
 
     #endregion
     
@@ -62,6 +64,7 @@ public class TempContoller : MonoBehaviour
         singleFireState = new SingleFIreState(stateMachine, "Shoot", this, gunData);
         autoFireState = new AutoFireState(stateMachine, "AutoShoot", this, gunData);
         runningGunState = new RunningGunState(stateMachine, "Running", this, gunData);
+        vaultingGunState = new VaultingGunState(stateMachine, "Vault", this, gunData);
     }
 
     private void Start()
@@ -114,7 +117,6 @@ public class TempContoller : MonoBehaviour
     {
         cam.fieldOfView = fov;
     }
-    
 
     #endregion
 
@@ -170,7 +172,43 @@ public class TempContoller : MonoBehaviour
         _audioSource.PlayOneShot(gunData.MagOut);
         yield return new WaitForSeconds(gunData.MagOut.length + 0.1f);
         _audioSource.PlayOneShot(gunData.MagIn);
+    }
 
+    public IEnumerator AimLerp()
+    {
+        Vector3 startingPos = transform.localPosition;
+        float startingFov = cam.fieldOfView;
+
+        float timer = 0f;
+        while (timer < gunData.TimeToAim)
+        {
+            timer += Time.deltaTime;
+            float lerpValue = timer / gunData.TimeToAim;
+
+            cam.fieldOfView = Mathf.Lerp(startingFov, gunData.AimingFov, lerpValue);
+            transform.localPosition = Vector3.Lerp(startingPos, gunData.AimingPos, lerpValue);
+            
+            yield return null;
+        }
+        
+    }
+
+    public IEnumerator DeAimLerp()
+    {
+        Vector3 currentPosition = transform.localPosition;
+        float currentFov = cam.fieldOfView;
+
+        float timer = 0f;
+        while (timer < gunData.TimeToDeAim)
+        {
+            timer += Time.deltaTime;
+            float lerpValue = timer / gunData.TimeToDeAim;
+
+            cam.fieldOfView = Mathf.Lerp(currentFov, normalFov, lerpValue);
+            transform.localPosition = Vector3.Lerp(currentPosition, Vector3.zero, lerpValue);
+            
+            yield return null;
+        }
     }
 
     public IEnumerator HitMarker()

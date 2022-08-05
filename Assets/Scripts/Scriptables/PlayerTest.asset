@@ -25,3 +25,10 @@ MonoBehaviour:
   terminalVelocity: -50
   jumpSpeed: 3
   coyoteTime: 0.2
+  walkOnConcrete:
+  - {fileID: 8300000, guid: 3349a852cef30a846a95a623b5ea3c2a, type: 3}
+  - {fileID: 8300000, guid: c14c17ef74ac00243a2ec1fb7ac3cf6f, type: 3}
+  - {fileID: 8300000, guid: 98463585e8e8d284eac9bdf8f35390f6, type: 3}
+  - {fileID: 8300000, guid: df9aa665b4d0a5f499f4539d0d3cab84, type: 3}
+  - {fileID: 8300000, guid: 5dcd4548cf20c4645ad87f5e6d51a9e0, type: 3}
+  - {fileID: 8300000, guid: 779ace4ae660a234a833e4bfa31b0c9b, type: 3}

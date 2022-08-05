@@ -18,7 +18,7 @@ public class InAirState : PlayerState
     public override void Enter()
     {
         base.Enter();
-        baseSpeed = playerController.lastState.baseSpeed;
+        //baseSpeed = playerController.lastState.baseSpeed;
     }
 
     public override void Update()
@@ -31,10 +31,10 @@ public class InAirState : PlayerState
         verAxis = Input.GetAxis("Vertical");
         canVault = playerController.CheckVault();
 
-        playerController.Move(horAxis, verAxis, baseSpeed);
+        playerController.Move(horAxis, verAxis, playerController.currentSpeed);
         playerController.FallingVelocity();
 
-        if (canVault && jump)
+        if (canVault && jumpBuffer)
         {
             stateMachine.ChangeState(playerController.playerVaultingState);
         }

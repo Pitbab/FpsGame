@@ -22,8 +22,7 @@ public class WeaponSway : MonoBehaviour
 
     private void Start()
     {
-        startingPos = new Vector3(0, 0, (-(mouseLook.baseFov / 60f) + 1f) * 0.3f);
-        Debug.Log(startingPos);
+        startingPos = Vector3.zero;//new Vector3(0, 0, (-(mouseLook.baseFov / 60f) + 1f) * 0.3f);
         transform.localPosition = startingPos;
     }
 

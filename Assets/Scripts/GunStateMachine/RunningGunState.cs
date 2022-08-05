@@ -21,6 +21,11 @@ public class RunningGunState : GunState
         {
             stateMachine.ChangeState(controller.idleGunState);
         }
+        
+        if (controller.mouvementController.stateMachine.currentState == controller.mouvementController.playerVaultingState)
+        {
+            stateMachine.ChangeState(controller.vaultingGunState);
+        }
 
         if (isHolding) return;
         stateMachine.ChangeState(controller.idleGunState);
