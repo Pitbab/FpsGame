@@ -75,7 +75,7 @@ public class MouseLook : MonoBehaviour
         _rotationX -= recoilRotX;
         _rotationX = Mathf.Clamp(_rotationX, -90f, 90f);
             
-        transform.parent.localRotation = Quaternion.Euler(_rotationX, 0f, 0f);
+        transform.localRotation = Quaternion.Euler(_rotationX, 0f, 0f);
         body.Rotate(Vector3.up * mouseX);
 
     }

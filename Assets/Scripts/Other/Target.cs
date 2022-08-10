@@ -8,9 +8,9 @@ public class Target : Hitable
     [SerializeField] private AudioClip hitMarker;
 
     
-    public override void Hit()
+    public override void Hit(Vector3 dir, float damage)
     {
-        base.Hit();
+        base.Hit(dir, damage);
         Destroy(transform.parent.gameObject);
         ServiceLocator.Current.Get<ISoundService>().PlaySound(hitMarker, transform.position, 1f);
     }

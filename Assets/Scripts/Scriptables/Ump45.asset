@@ -23,3 +23,4 @@ MonoBehaviour:
   aimingFov: 40
   timeToAim: 0.1
   timeToDeAim: 0.05
+  damage: 10

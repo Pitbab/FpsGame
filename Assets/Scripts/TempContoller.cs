@@ -22,6 +22,7 @@ public class TempContoller : MonoBehaviour
     public float rateOfFire = 0.05f;
 
     public float normalFov { get; private set; }
+    public float damage => gunData.Damage;
 
     public Camera cam;
     private MouseLook _mouseLook;

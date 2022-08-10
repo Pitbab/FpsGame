@@ -43,7 +43,7 @@ public class BulletManager : IBulletService
 
             if (hitable == null) return;
             
-            hitable.Hit();
+            hitable.Hit(ray.direction, shooter.damage);
             shooter.StartCoroutine(shooter.HitMarker());
 
         }

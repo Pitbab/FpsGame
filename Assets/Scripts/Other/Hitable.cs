@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class Hitable : MonoBehaviour
 {
-    public virtual void Hit()
+    public virtual void Hit(Vector3 dir, float damage)
     {
         
     }
